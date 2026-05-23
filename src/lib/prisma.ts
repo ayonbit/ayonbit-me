@@ -1,6 +1,5 @@
 import "dotenv/config";
 
-// import { PrismaClient } from "../../generated/prisma/client";
 import { PrismaClient } from "@prisma/client";
 
 const globalForPrisma = globalThis as typeof globalThis & {
