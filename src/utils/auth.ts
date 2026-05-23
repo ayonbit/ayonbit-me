@@ -20,15 +20,24 @@ export const authOptions: NextAuthOptions = {
   },
 
   session: {
-    strategy: "database",
+    strategy: "jwt",
     maxAge: 6 * 60 * 60,
     updateAge: 1 * 60 * 60,
   },
 
   callbacks: {
-    async session({ session, user }) {
-      if (session.user && user?.id) {
-        session.user.id = user.id;
+    async jwt({ token, user }) {
+      if (user?.id) {
+        token.id = user.id;
+        token.role = "user";
+      }
+
+      return token;
+    },
+
+    async session({ session, token }) {
+      if (session.user && token?.id) {
+        session.user.id = String(token.id);
         session.user.role = "user";
       }
 
@@ -62,6 +71,13 @@ declare module "next-auth" {
 
   interface User {
     id: string;
+    role?: string;
+  }
+}
+
+declare module "next-auth/jwt" {
+  interface JWT {
+    id?: string;
     role?: string;
   }
 }

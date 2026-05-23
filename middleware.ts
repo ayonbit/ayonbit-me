@@ -2,19 +2,12 @@ import { getToken } from "next-auth/jwt";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function middleware(req: NextRequest): Promise<NextResponse> {
-  const token = await getToken({ req });
+  const token = await getToken({
+    req,
+    secret: process.env.NEXTAUTH_SECRET,
+  });
 
   const { pathname } = req.nextUrl;
-
-  const publicRoutes: string[] = [
-    "/",
-    "/sign-in",
-    "/blog",
-    "/service",
-    "/about",
-    "/contact",
-    "/portfolio",
-  ];
 
   const protectedRoutes: string[] = ["/write", "/dashboard", "/profile"];
 
