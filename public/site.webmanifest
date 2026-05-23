@@ -1,0 +1,30 @@
+{
+  "id": "/",
+  "name": "Ayon Bit - FullStack Developer",
+  "short_name": "Ayon Bit",
+  "description": "Professional FullStack Developer specializing in React, Next.js, Node.js, and MongoDB. Building modern web applications.",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "display_override": ["standalone", "minimal-ui", "window-controls-overlay"],
+  "background_color": "#000000",
+  "theme_color": "#000000",
+  "orientation": "portrait-primary",
+  "categories": ["technology", "development", "programming"],
+  "lang": "en",
+  "dir": "ltr",
+  "prefer_related_applications": false,
+  "related_applications": [],
+  "icons": [
+    {
+      "src": "/favicon.ico",
+      "sizes": "48x48",
+      "type": "image/x-icon"
+    },
+    {
+      "src": "/apple-touch-icon.png",
+      "sizes": "180x180",
+      "type": "image/png"
+    }
+  ]
+}

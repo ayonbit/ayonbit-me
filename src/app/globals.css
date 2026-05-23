@@ -1,0 +1,219 @@
+@import "tailwindcss";
+
+/* =========================
+   Theme Configuration
+========================= */
+
+@theme {
+  /* Fonts */
+  --font-primary: var(--font-jetbrainsMono);
+
+  /* Colors */
+  --color-primary: #1c1c22;
+
+  --color-accent: #00ff99;
+  --color-accent-hover: #00e187;
+
+  /* Custom Breakpoints */
+  --breakpoint-sm: 40rem; /* 640px */
+  --breakpoint-md: 48rem; /* 768px */
+  --breakpoint-lg: 60rem; /* 960px */
+  --breakpoint-xl: 75rem; /* 1200px */
+  /* Animations */
+  --animate-accordion-down: accordion-down 0.2s ease-out;
+  --animate-accordion-up: accordion-up 0.2s ease-out;
+  /* Container */
+  --container-padding: 15px;
+
+  /* Animations */
+  --animate-accordion-down: accordion-down 0.2s ease-out;
+  --animate-accordion-up: accordion-up 0.2s ease-out;
+}
+
+/* =========================
+   Container Utility
+========================= */
+
+@utility container {
+  margin-inline: auto;
+  padding-inline: 15px;
+  width: 100%;
+
+  @media (width >= 40rem) {
+    max-width: 40rem;
+  }
+
+  @media (width >= 48rem) {
+    max-width: 48rem;
+  }
+
+  @media (width >= 60rem) {
+    max-width: 60rem;
+  }
+
+  @media (width >= 75rem) {
+    max-width: 75rem;
+  }
+}
+
+/* =========================
+   Keyframes
+========================= */
+
+@keyframes accordion-down {
+  from {
+    height: 0;
+  }
+
+  to {
+    height: var(--radix-accordion-content-height);
+  }
+}
+
+@keyframes accordion-up {
+  from {
+    height: var(--radix-accordion-content-height);
+  }
+
+  to {
+    height: 0;
+  }
+}
+
+/* =========================
+   Base Layer
+========================= */
+
+@layer base {
+  body {
+    @apply font-primary bg-primary text-white leading-loose;
+  }
+
+  .h1 {
+    @apply text-[48px] xl:text-[80px] leading-[1.1] font-semibold;
+  }
+
+  .h2 {
+    @apply text-[36px] xl:text-[48px] leading-[1.1] font-semibold;
+  }
+
+  .h3 {
+    @apply text-[20px] xl:text-[24px] leading-[1.1] font-semibold;
+  }
+
+  .text-outline {
+    -webkit-text-stroke: 1px #ffffff;
+  }
+
+  .text-outline-hover {
+    -webkit-text-stroke: 1px #00ff99;
+  }
+}
+
+/* =========================
+   Tiptap Editor Styles
+========================= */
+
+/* Headings */
+
+.tiptap h1 {
+  @apply text-3xl font-bold my-6;
+}
+
+.tiptap h2 {
+  @apply text-2xl font-bold my-5;
+}
+
+.tiptap h3 {
+  @apply text-xl font-semibold my-4;
+}
+
+.tiptap h4 {
+  @apply text-lg font-medium my-3;
+}
+
+.tiptap h5 {
+  @apply text-base font-medium my-2;
+}
+
+.tiptap h6 {
+  @apply text-sm font-medium uppercase tracking-wider text-gray-500 my-2;
+}
+
+/* Text Elements */
+
+.tiptap p {
+  @apply my-4 leading-relaxed;
+}
+
+.tiptap blockquote {
+  @apply border-l-4 border-gray-300 pl-4 italic text-gray-600 my-4;
+}
+
+.tiptap code {
+  @apply bg-gray-100 px-2 py-1 rounded text-sm;
+}
+
+.tiptap pre {
+  @apply bg-gray-800 text-gray-100 p-4 rounded my-4 overflow-x-auto;
+}
+
+.tiptap pre code {
+  @apply bg-transparent p-0 text-inherit;
+}
+
+/* Lists */
+
+.tiptap ul {
+  @apply list-disc pl-6 my-3 space-y-1;
+}
+
+.tiptap ol {
+  @apply list-decimal pl-6 my-3 space-y-1;
+}
+
+.tiptap li {
+  @apply my-1;
+}
+
+/* Special Elements */
+
+.tiptap hr {
+  @apply border-t border-gray-200 my-6;
+}
+
+/* Tables */
+
+.tiptap table {
+  @apply w-full border-collapse my-4;
+}
+
+.tiptap th {
+  @apply bg-gray-100 font-semibold text-left p-2 border border-gray-300;
+}
+
+.tiptap td {
+  @apply p-2 border border-gray-300;
+}
+
+/* Placeholder */
+
+.tiptap .is-editor-empty:first-child::before {
+  content: attr(data-placeholder);
+  @apply text-gray-400 float-left h-0 pointer-events-none;
+}
+
+/* Media */
+
+.prose iframe {
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  margin: 1.5rem 0;
+  border-radius: 0.5rem;
+  border: 1px solid #333;
+}
+
+.prose img {
+  max-height: 500px;
+  object-fit: contain;
+}
