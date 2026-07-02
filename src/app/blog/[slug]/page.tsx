@@ -4,7 +4,13 @@ import type { ReactElement } from "react";
 
 import BlogSingleContent from "../../../components/Blog/BlogSingleContent";
 import { getBlogPostBySlug, getPlainTextPreview } from "../../../lib/blog";
-import { absoluteUrl, createMetadata, siteConfig } from "../../../lib/seo";
+import {
+  absoluteUrl,
+  breadcrumbJsonLd,
+  createMetadata,
+  jsonLdScript,
+  siteConfig,
+} from "../../../lib/seo";
 import type { PageParams } from "../../../types/blog.types";
 
 export const revalidate = 3600;
@@ -24,8 +30,8 @@ export const generateMetadata = async ({
     });
   }
 
-  const imageUrl = post.img?.[0]?.match(/^https?:\/\//)
-    ? post.img[0]
+  const imageUrl = post.img?.[0]
+    ? absoluteUrl(post.img[0])
     : absoluteUrl(siteConfig.ogImage);
 
   const description =
@@ -71,30 +77,40 @@ const createArticleJsonLd = (
   const description =
     getPlainTextPreview(post.desc) ||
     "Read this article from Ayon Bit's web development blog.";
-  const image = post.img?.[0]?.match(/^https?:\/\//)
-    ? post.img[0]
+  const image = post.img?.[0]
+    ? absoluteUrl(post.img[0])
     : absoluteUrl(siteConfig.ogImage);
 
   return {
     "@context": "https://schema.org",
-    "@type": "BlogPosting",
-    headline: post.title,
-    description,
-    image,
-    datePublished: post.createdAt,
-    dateModified: post.createdAt,
-    mainEntityOfPage: absoluteUrl(`/blog/${post.slug}`),
-    author: {
-      "@type": "Person",
-      name: post.user?.name || siteConfig.name,
-      url: siteConfig.url,
-    },
-    publisher: {
-      "@type": "Person",
-      name: siteConfig.name,
-      url: siteConfig.url,
-    },
-    keywords: post.tags,
+    "@graph": [
+      breadcrumbJsonLd([
+        { name: "Home", path: "/" },
+        { name: "Blog", path: "/blog" },
+        { name: post.title, path: `/blog/${post.slug}` },
+      ]),
+      {
+        "@type": "BlogPosting",
+        "@id": `${absoluteUrl(`/blog/${post.slug}`)}#article`,
+        headline: post.title,
+        description,
+        image,
+        datePublished: post.createdAt,
+        dateModified: post.createdAt,
+        mainEntityOfPage: absoluteUrl(`/blog/${post.slug}`),
+        author: {
+          "@type": "Person",
+          name: post.user?.name || siteConfig.name,
+          url: siteConfig.url,
+        },
+        publisher: {
+          "@type": "Person",
+          name: siteConfig.name,
+          url: siteConfig.url,
+        },
+        keywords: post.tags,
+      },
+    ],
   };
 };
 
@@ -112,9 +128,7 @@ const BlogSinglePage = async ({
     <>
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{
-          __html: JSON.stringify(createArticleJsonLd(post)),
-        }}
+        dangerouslySetInnerHTML={jsonLdScript(createArticleJsonLd(post))}
       />
       <BlogSingleContent post={post} />
     </>

@@ -8,7 +8,7 @@ import { Toaster } from "react-hot-toast";
 import Header from "../components/Header";
 import PageTransition from "../components/PageTransition";
 import StairTransition from "../components/StairTransition";
-import { personJsonLd, siteConfig } from "../lib/seo";
+import { jsonLdScript, personJsonLd, siteConfig } from "../lib/seo";
 import AuthProvider from "../utils/AuthProvider";
 import "./globals.css";
 
@@ -65,7 +65,7 @@ export const metadata: Metadata = {
         url: siteConfig.ogImage,
         width: 1200,
         height: 630,
-        alt: `${siteConfig.name} - Full-Stack Developer Portfolio`,
+        alt: siteConfig.ogImageAlt,
       },
     ],
   },
@@ -124,7 +124,7 @@ export default function RootLayout({ children }: RootLayoutProps) {
           id="structured-data"
           type="application/ld+json"
           strategy="afterInteractive"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(personJsonLd()) }}
+          dangerouslySetInnerHTML={jsonLdScript(personJsonLd())}
         />
       </body>
     </html>

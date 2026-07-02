@@ -3,7 +3,13 @@ import type { ReactElement } from "react";
 
 import BlogPageContent from "../../components/Blog/BlogPageContent";
 import { getPaginatedBlogPosts } from "../../lib/blog";
-import { createMetadata } from "../../lib/seo";
+import {
+  absoluteUrl,
+  breadcrumbJsonLd,
+  collectionPageJsonLd,
+  createMetadata,
+  jsonLdScript,
+} from "../../lib/seo";
 
 export const dynamic = "force-dynamic";
 
@@ -32,9 +38,44 @@ const BlogPage = async ({
 }: BlogPageProps): Promise<ReactElement> => {
   const params = await Promise.resolve(searchParams);
   const data = await getPaginatedBlogPosts(params?.page);
+  const blogListJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "ItemList",
+    name: "Ayon Bit blog posts",
+    itemListElement: data.posts.map((post, index) => ({
+      "@type": "ListItem",
+      position: (data.currentPage - 1) * data.perPage + index + 1,
+      url: absoluteUrl(`/blog/${post.slug}`),
+      item: {
+        "@type": "BlogPosting",
+        headline: post.title,
+        url: absoluteUrl(`/blog/${post.slug}`),
+        datePublished: post.createdAt,
+        author: {
+          "@type": "Person",
+          name: post.user?.name || "Ayon Bit",
+        },
+      },
+    })),
+  };
 
   return (
     <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={jsonLdScript([
+          collectionPageJsonLd({
+            name: "Blog",
+            description: metadata.description || "",
+            path: "/blog",
+          }),
+          breadcrumbJsonLd([
+            { name: "Home", path: "/" },
+            { name: "Blog", path: "/blog" },
+          ]),
+          blogListJsonLd,
+        ])}
+      />
       <header className="mb-4 text-center lg:mb-4">
         <h1 className="mb-4 text-3xl font-bold text-accent sm:mb-6 sm:text-4xl md:text-5xl">
           My Latest Blog

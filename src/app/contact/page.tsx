@@ -1,5 +1,11 @@
 import ContactForm from "../../components/ContactForm";
-import { createMetadata } from "../../lib/seo";
+import {
+  absoluteUrl,
+  breadcrumbJsonLd,
+  createMetadata,
+  jsonLdScript,
+  siteConfig,
+} from "../../lib/seo";
 import { FaEnvelope, FaMapMarkedAlt, FaWhatsapp } from "react-icons/fa";
 
 export const metadata = createMetadata({
@@ -33,6 +39,25 @@ const Contact = () => {
 
   return (
     <section className="py-8 md:py-12 lg:py-16 px-4 sm:px-6 lg:px-8">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={jsonLdScript([
+          {
+            "@context": "https://schema.org",
+            "@type": "ContactPage",
+            name: "Contact Ayon Bit",
+            description: metadata.description || "",
+            url: absoluteUrl("/contact"),
+            mainEntity: {
+              "@id": `${siteConfig.url}/#person`,
+            },
+          },
+          breadcrumbJsonLd([
+            { name: "Home", path: "/" },
+            { name: "Contact", path: "/contact" },
+          ]),
+        ])}
+      />
       <div className="container mx-auto max-w-7xl">
         <div className="flex flex-col lg:flex-row gap-8 xl:gap-12">
           {/* Contact Information - Now 50% width on desktop */}

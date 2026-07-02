@@ -6,7 +6,13 @@ import { ServiceHeroSection } from "../../../components/ServiceHero";
 import ServiceSlug from "../../../components/ServiceSlug";
 
 import { serviceData } from "../../../lib/data";
-import { absoluteUrl, createMetadata, siteConfig } from "../../../lib/seo";
+import {
+  absoluteUrl,
+  breadcrumbJsonLd,
+  createMetadata,
+  jsonLdScript,
+  siteConfig,
+} from "../../../lib/seo";
 
 type ServiceItemType = {
   title: string;
@@ -46,7 +52,7 @@ export async function generateMetadata({
 
   const image = service.image?.startsWith("http")
     ? service.image
-    : absoluteUrl(service.image || siteConfig.ogImage);
+    : absoluteUrl(siteConfig.ogImage);
 
   return createMetadata({
     title: service.category,
@@ -65,11 +71,9 @@ const createServiceJsonLd = (service: ServiceType) => ({
   url: absoluteUrl(`/service/${service.slug}`),
   image: service.image?.startsWith("http")
     ? service.image
-    : absoluteUrl(service.image || siteConfig.ogImage),
+    : absoluteUrl(siteConfig.ogImage),
   provider: {
-    "@type": "Person",
-    name: siteConfig.name,
-    url: siteConfig.url,
+    "@id": `${siteConfig.url}/#person`,
   },
   areaServed: "Worldwide",
   serviceType: service.category,
@@ -88,9 +92,14 @@ const ServiceSlugPage = async ({ params }: ServiceSlugPageProps) => {
     <PageTransition>
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{
-          __html: JSON.stringify(createServiceJsonLd(service)),
-        }}
+        dangerouslySetInnerHTML={jsonLdScript([
+          breadcrumbJsonLd([
+            { name: "Home", path: "/" },
+            { name: "Services", path: "/service" },
+            { name: service.category, path: `/service/${service.slug}` },
+          ]),
+          createServiceJsonLd(service),
+        ])}
       />
       <section className="flex min-h-screen flex-col justify-center py-12 md:py-16">
         <div className="container mx-auto max-w-6xl px-4">

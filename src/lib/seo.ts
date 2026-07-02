@@ -5,11 +5,12 @@ const rawSiteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://ayonbit.me";
 export const siteConfig = {
   name: "Ayon Bit",
   url: rawSiteUrl.replace(/\/$/, ""),
-  title: "Ayon Bit - Full-Stack Developer",
+  title: "Ayon Bit | Next.js Full-Stack Developer",
   titleTemplate: "%s | Ayon Bit",
   description:
-    "Ayon Bit is a full-stack developer specializing in React, Next.js, Node.js, MongoDB, Shopify, UI/UX design, and SEO-friendly web applications.",
+    "Ayon Bit builds fast, SEO-friendly websites, Next.js apps, Shopify stores, and full-stack products for businesses worldwide.",
   ogImage: "/images/opengraph-image.png",
+  ogImageAlt: "Ayon Bit full-stack developer portfolio preview",
   locale: "en_US",
   language: "en",
   email: "ayonbit@gmail.com",
@@ -98,7 +99,7 @@ export function createMetadata({
           url: imageUrl,
           width: 1200,
           height: 630,
-          alt: title || siteConfig.title,
+          alt: title || siteConfig.ogImageAlt,
         },
       ],
     },
@@ -109,6 +110,54 @@ export function createMetadata({
       creator: "@ayonbit",
       images: [imageUrl],
     },
+  };
+}
+
+type BreadcrumbItem = {
+  name: string;
+  path: string;
+};
+
+export function breadcrumbJsonLd(items: BreadcrumbItem[]) {
+  return {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: items.map((item, index) => ({
+      "@type": "ListItem",
+      position: index + 1,
+      name: item.name,
+      item: absoluteUrl(item.path),
+    })),
+  };
+}
+
+export function collectionPageJsonLd({
+  name,
+  description,
+  path,
+}: {
+  name: string;
+  description: string;
+  path: string;
+}) {
+  return {
+    "@context": "https://schema.org",
+    "@type": "CollectionPage",
+    name,
+    description,
+    url: absoluteUrl(path),
+    isPartOf: {
+      "@id": `${siteConfig.url}/#website`,
+    },
+    about: {
+      "@id": `${siteConfig.url}/#person`,
+    },
+  };
+}
+
+export function jsonLdScript(data: unknown) {
+  return {
+    __html: JSON.stringify(data).replace(/</g, "\\u003c"),
   };
 }
 
@@ -125,6 +174,16 @@ export function personJsonLd() {
         inLanguage: siteConfig.language,
         publisher: {
           "@id": `${siteConfig.url}/#person`,
+        },
+        potentialAction: {
+          "@type": "ReadAction",
+          target: [
+            absoluteUrl("/about"),
+            absoluteUrl("/service"),
+            absoluteUrl("/portfolio"),
+            absoluteUrl("/blog"),
+            absoluteUrl("/contact"),
+          ],
         },
       },
       {
@@ -150,6 +209,29 @@ export function personJsonLd() {
           "Shopify",
           "UI/UX Design",
           "Search Engine Optimization",
+        ],
+        makesOffer: [
+          {
+            "@type": "Offer",
+            itemOffered: {
+              "@type": "Service",
+              name: "Next.js and full-stack web development",
+            },
+          },
+          {
+            "@type": "Offer",
+            itemOffered: {
+              "@type": "Service",
+              name: "Shopify store setup and optimization",
+            },
+          },
+          {
+            "@type": "Offer",
+            itemOffered: {
+              "@type": "Service",
+              name: "UI/UX design for web applications",
+            },
+          },
         ],
       },
     ],
