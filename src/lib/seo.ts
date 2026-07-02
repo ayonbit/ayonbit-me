@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 
-const rawSiteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://ayonbit.me";
+const rawSiteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://www.ayonbit.me";
 
 export const siteConfig = {
   name: "Ayon Bit",

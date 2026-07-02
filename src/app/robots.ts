@@ -1,6 +1,6 @@
 import type { MetadataRoute } from "next";
 
-const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://ayonbit.me";
+const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://www.ayonbit.me";
 const siteUrl = baseUrl.replace(/\/$/, "");
 
 export default function robots(): MetadataRoute.Robots {
