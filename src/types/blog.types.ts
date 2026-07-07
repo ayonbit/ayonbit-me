@@ -37,6 +37,7 @@ export type BlogCardProps = PostType & {
   index: number;
   currentPage: number;
   className?: string;
+  previewText?: string;
 };
 
 export type BlogSingleContentProps = {
@@ -52,3 +53,4 @@ export type PageParams = {
         slug: string;
       }>;
 };
+

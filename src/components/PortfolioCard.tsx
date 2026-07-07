@@ -56,7 +56,7 @@ const PortfolioCard = (): React.ReactElement => {
       animate={{
         opacity: 1,
         transition: {
-          delay: 2.4,
+          delay: 0.4,
           duration: 0.4,
           ease: "easeIn",
         },

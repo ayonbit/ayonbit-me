@@ -8,25 +8,6 @@ import { BsArrowDownRight } from "react-icons/bs";
 
 import type { BlogCardProps } from "../../types/blog.types";
 
-const getPreviewText = (html: string): string => {
-  if (!html) {
-    return "No content available";
-  }
-
-  const text = html
-    .replace(/<script[\s\S]*?>[\s\S]*?<\/script>/gi, " ")
-    .replace(/<style[\s\S]*?>[\s\S]*?<\/style>/gi, " ")
-    .replace(/<[^>]+>/g, " ")
-    .replace(/\s+/g, " ")
-    .trim();
-
-  if (!text) {
-    return "Read more...";
-  }
-
-  return text.length > 180 ? `${text.slice(0, 180)}...` : text;
-};
-
 const formatDate = (value: string): string => {
   const date = new Date(value);
 
@@ -54,7 +35,7 @@ const BlogCard = ({
   currentPage,
   views,
 }: BlogCardProps): ReactElement => {
-  const previewText = useMemo(() => getPreviewText(desc), [desc]);
+  // desc is already a server-generated plain text preview (180 chars max)
   const publishedAt = useMemo(() => formatDate(createdAt), [createdAt]);
   const shouldPrioritizeImage = currentPage === 1 && index < 3;
 
@@ -108,7 +89,7 @@ const BlogCard = ({
           </h3>
 
           <p className="mb-4 line-clamp-3 text-xs text-gray-400 sm:text-sm">
-            {previewText}
+            {desc}
           </p>
 
           <div className="mt-auto flex items-center justify-between gap-3 border-t border-accent pt-3 sm:pt-4">

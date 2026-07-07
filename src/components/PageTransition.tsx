@@ -22,7 +22,7 @@ const PageTransition = ({ children }: PageTransitionProps) => {
           animate={{
             opacity: 0,
             transition: {
-              delay: 1,
+              delay: 0.4,
               duration: 0.4,
               ease: "easeOut",
             },

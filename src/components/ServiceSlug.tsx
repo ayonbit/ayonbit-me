@@ -32,7 +32,7 @@ const ServiceSlug = ({ service }: ServiceSlugProps) => {
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{
-          delay: 2.1,
+          delay: 0.5,
           duration: 0.5,
         }}
         className="mx-auto w-full md:w-5/6 lg:w-3/4"
@@ -50,7 +50,7 @@ const ServiceSlug = ({ service }: ServiceSlugProps) => {
                 y: 0,
               }}
               transition={{
-                delay: 2.3 + index * 0.1,
+                delay: 0.6 + index * 0.1,
                 duration: 0.5,
               }}
             >
@@ -131,7 +131,7 @@ const ServiceSlug = ({ service }: ServiceSlugProps) => {
           y: 0,
         }}
         transition={{
-          delay: 2.8,
+          delay: 0.8,
           duration: 0.5,
         }}
         className="mt-12 text-center"

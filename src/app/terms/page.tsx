@@ -8,7 +8,7 @@ export const metadata = createMetadata({
   keywords: ["terms and conditions", "sign in terms", "privacy"],
 });
 
-const terms = () => {
+const TermsPage = () => {
   return (
     <div className="p-10 text-white bg-primary min-h-screen">
       <div className="p-6 max-w-3xl mx-auto text-white">
@@ -87,4 +87,4 @@ const terms = () => {
   );
 };
 
-export default terms;
+export default TermsPage;

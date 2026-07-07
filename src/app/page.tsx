@@ -2,11 +2,8 @@
 
 // Dependencies
 import dynamic from "next/dynamic";
-import { useCallback } from "react";
-import { FiDownload } from "react-icons/fi";
-import { Button } from "../components/ui/button";
-
 // Internal Dependencies
+import DownloadCvButton from "../components/DownloadCvButton";
 import Photo from "../components/Photo";
 
 // Dynamic Imports
@@ -15,23 +12,6 @@ const Socials = dynamic(() => import("../components/Socials"), { ssr: false });
 
 // Home Page
 const Home = () => {
-  // CV File Handler
-  const downloadCvHandler = useCallback(() => {
-    const cvFile = "/assets/Ayon_Bit_CV.txt"; // CV url
-
-    try {
-      const link = document.createElement("a");
-      link.href = cvFile;
-      link.download = "Ayon_Bit_CV.txt";
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
-    } catch (error) {
-      console.error("Error downloading CV:", error);
-      alert("There was an issue downloading the CV.");
-    }
-  }, []);
-
   return (
     <section className="min-h-screen py-12 xl:py-0">
       <div className="container mx-auto h-full px-4 xl:px-0">
@@ -51,16 +31,7 @@ const Home = () => {
             </p>
             {/* Button and Social Media */}
             <div className="flex flex-col xl:flex-row items-center gap-8">
-              <Button
-                variant="outline"
-                size="lg"
-                className="uppercase flex items-center gap-2"
-                onClick={downloadCvHandler}
-                aria-label="Download CV"
-              >
-                <span>Download CV</span>
-                <FiDownload className="text-xl" />
-              </Button>
+              <DownloadCvButton />
               <div className="mb-8 xl:mb-0">
                 <Socials
                   containerStyles="grid grid-cols-4 gap-4 md:flex md:flex-row xl:flex-row"

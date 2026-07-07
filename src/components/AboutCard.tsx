@@ -1,10 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
-import AboutMe from "../components/AboutMe";
-import Education from "../components/Education";
-import Experience from "../components/Experience";
-import Skills from "../components/Skills";
+import dynamic from "next/dynamic";
 import {
   Tabs,
   TabsContent,
@@ -12,13 +9,18 @@ import {
   TabsTrigger,
 } from "../components/ui/tabs";
 
+const AboutMe = dynamic(() => import("../components/AboutMe"));
+const Education = dynamic(() => import("../components/Education"));
+const Experience = dynamic(() => import("../components/Experience"));
+const Skills = dynamic(() => import("../components/Skills"));
+
 export const AboutCard = () => {
   return (
     <motion.div
       initial={{ opacity: 0 }}
       animate={{
         opacity: 1,
-        transition: { delay: 2.4, duration: 0.4, ease: "easeIn" },
+        transition: { delay: 0.4, duration: 0.4, ease: "easeIn" },
       }}
       className="min-h-[80vh] flex items-center justify-center py-12 xl:py-0"
     >

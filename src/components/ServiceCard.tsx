@@ -30,11 +30,7 @@ export const ServiceCard = ({
       initial={{ opacity: 0 }}
       animate={{
         opacity: 1,
-        transition: {
-          delay: 2.4,
-          duration: 0.4,
-          ease: "easeIn",
-        },
+        transition: { delay: 0.4, duration: 0.4, ease: "easeIn" },
       }}
       className={`group flex flex-col justify-between gap-6 overflow-hidden rounded-xl border border-white/5 bg-neutral-100/5 p-6 shadow-lg transition-all duration-300 hover:bg-neutral-100/10 lg:p-8 ${className}`}
     >

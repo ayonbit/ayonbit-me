@@ -1,4 +1,5 @@
-import ContactForm from "../../components/ContactForm";
+import dynamic from "next/dynamic";
+import { FaEnvelope, FaMapMarkedAlt, FaWhatsapp } from "react-icons/fa";
 import {
   absoluteUrl,
   breadcrumbJsonLd,
@@ -6,7 +7,6 @@ import {
   jsonLdScript,
   siteConfig,
 } from "../../lib/seo";
-import { FaEnvelope, FaMapMarkedAlt, FaWhatsapp } from "react-icons/fa";
 
 export const metadata = createMetadata({
   title: "Contact Ayon Bit",
@@ -15,6 +15,8 @@ export const metadata = createMetadata({
   path: "/contact",
   keywords: ["hire web developer", "contact Ayon Bit", "freelance developer"],
 });
+
+const ContactForm = dynamic(() => import("../../components/ContactForm"));
 
 const Contact = () => {
   const contactInfo = [

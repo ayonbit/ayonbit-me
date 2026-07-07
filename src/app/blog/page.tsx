@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import type { ReactElement } from "react";
 
 import BlogPageContent from "../../components/Blog/BlogPageContent";
-import { getPaginatedBlogPosts } from "../../lib/blog";
+import { getPaginatedBlogPosts, getPlainTextPreview } from "../../lib/blog";
 import {
   absoluteUrl,
   breadcrumbJsonLd,
@@ -11,8 +11,7 @@ import {
   jsonLdScript,
 } from "../../lib/seo";
 
-export const dynamic = "force-dynamic";
-
+export const revalidate = 300;
 type BlogPageProps = {
   searchParams?:
     | {
@@ -45,11 +44,24 @@ const BlogPage = async ({
 }: BlogPageProps): Promise<ReactElement> => {
   const params = await Promise.resolve(searchParams);
   const data = await getPaginatedBlogPosts(params?.page);
+
+  // Strip full HTML content from blog list posts (only need preview)
+  // and generate preview text on the server
+  const lightweightPosts = data.posts.map((post) => ({
+    ...post,
+    desc: getPlainTextPreview(post.desc || "", 180),
+  }));
+
+  const dataWithLightweightPosts = {
+    ...data,
+    posts: lightweightPosts,
+  };
+
   const blogListJsonLd = {
     "@context": "https://schema.org",
     "@type": "ItemList",
     name: "Ayon Bit blog posts",
-    itemListElement: data.posts.map((post, index) => ({
+    itemListElement: lightweightPosts.map((post, index) => ({
       "@type": "ListItem",
       position: (data.currentPage - 1) * data.perPage + index + 1,
       url: absoluteUrl(`/blog/${post.slug}`),
@@ -95,7 +107,7 @@ const BlogPage = async ({
         </p>
       </header>
 
-      <BlogPageContent {...data} />
+      <BlogPageContent {...dataWithLightweightPosts} />
     </>
   );
 };
