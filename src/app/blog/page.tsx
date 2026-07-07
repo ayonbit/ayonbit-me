@@ -13,16 +13,6 @@ import {
 
 export const dynamic = "force-dynamic";
 
-export const metadata: Metadata = {
-  ...createMetadata({
-    title: "Blog",
-    description:
-      "Read Ayon Bit's articles about web development, Next.js, React, UI/UX, Shopify, performance, and practical technology insights.",
-    path: "/blog",
-    keywords: ["web development blog", "Next.js blog", "React tutorials"],
-  }),
-};
-
 type BlogPageProps = {
   searchParams?:
     | {
@@ -32,6 +22,23 @@ type BlogPageProps = {
         page?: string | string[];
       }>;
 };
+
+export async function generateMetadata({
+  searchParams,
+}: BlogPageProps): Promise<Metadata> {
+  const params = await Promise.resolve(searchParams);
+  const currentPage = Number(params?.page) || 1;
+  const path = currentPage > 1 ? `/blog?page=${currentPage}` : "/blog";
+
+  return createMetadata({
+    title: currentPage > 1 ? `Blog - Page ${currentPage}` : "Blog",
+    description:
+      "Read Ayon Bit's articles about web development, Next.js, React, UI/UX, Shopify, performance, and practical technology insights.",
+    path: "/blog",
+    canonicalPath: currentPage > 1 ? "/blog" : undefined,
+    keywords: ["web development blog", "Next.js blog", "React tutorials"],
+  });
+}
 
 const BlogPage = async ({
   searchParams,
@@ -66,7 +73,8 @@ const BlogPage = async ({
         dangerouslySetInnerHTML={jsonLdScript([
           collectionPageJsonLd({
             name: "Blog",
-            description: metadata.description || "",
+            description:
+              "Read Ayon Bit's articles about web development, Next.js, React, UI/UX, Shopify, performance, and practical technology insights.",
             path: "/blog",
           }),
           breadcrumbJsonLd([

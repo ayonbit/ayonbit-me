@@ -43,6 +43,7 @@ type MetadataInput = {
   title?: string;
   description?: string;
   path?: string;
+  canonicalPath?: string;
   image?: string;
   keywords?: string[];
   type?: "website" | "article" | "profile";
@@ -61,12 +62,14 @@ export function createMetadata({
   title,
   description = siteConfig.description,
   path = "/",
+  canonicalPath,
   image = siteConfig.ogImage,
   keywords = [],
   type = "website",
   noIndex = false,
 }: MetadataInput = {}): Metadata {
   const pageUrl = absoluteUrl(path);
+  const canonicalUrl = canonicalPath ? absoluteUrl(canonicalPath) : pageUrl;
   const imageUrl = absoluteUrl(image);
 
   return {
@@ -74,7 +77,7 @@ export function createMetadata({
     description,
     keywords: [...siteConfig.keywords, ...keywords],
     alternates: {
-      canonical: pageUrl,
+      canonical: canonicalUrl,
     },
     robots: {
       index: !noIndex,
