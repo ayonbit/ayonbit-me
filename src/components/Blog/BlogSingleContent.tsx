@@ -2,7 +2,7 @@
 
 import DOMPurify from "dompurify";
 import Image from "next/image";
-import { useMemo, useState, type ReactElement } from "react";
+import { useEffect, useMemo, useState, type ReactElement } from "react";
 import { FaCalendar, FaComments, FaEye } from "react-icons/fa";
 
 import ShareButtons from "../ShareButton";
@@ -27,6 +27,32 @@ const formatDate = (value: string): string => {
 
 const BlogSingleContent = ({ post }: BlogSingleContentProps): ReactElement => {
   const [commentCount, setCommentCount] = useState<number>(0);
+  const [viewCount, setViewCount] = useState<number>(post.views);
+
+  // Increment view count on page load (once per session)
+  useEffect(() => {
+    const viewedKey = `viewed_${post.slug}`;
+    const alreadyViewed = sessionStorage.getItem(viewedKey);
+
+    if (!alreadyViewed) {
+      fetch("/api/blog/views", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ slug: post.slug }),
+      })
+        .then((res) => res.json())
+        .then((data) => {
+          if (data.views) {
+            setViewCount(data.views);
+          }
+        })
+        .catch(() => {
+          // Silently fail - don't break the page
+        });
+
+      sessionStorage.setItem(viewedKey, "true");
+    }
+  }, [post.slug]);
 
   const sanitizedContent = useMemo((): string => {
     return DOMPurify.sanitize(post.desc || "", {
@@ -81,7 +107,7 @@ const BlogSingleContent = ({ post }: BlogSingleContentProps): ReactElement => {
           <div className="flex items-center gap-1">
             <FaEye size={12} />
 
-            <span>{post.views} views</span>
+            <span>{viewCount} views</span>
           </div>
 
           {post.tags?.[0] && (
