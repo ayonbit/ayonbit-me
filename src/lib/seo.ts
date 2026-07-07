@@ -158,6 +158,32 @@ export function collectionPageJsonLd({
   };
 }
 
+export function siteNavigationJsonLd() {
+  const navItems = [
+    { name: "Home", path: "/" },
+    { name: "About", path: "/about" },
+    { name: "Services", path: "/service" },
+    { name: "Portfolio", path: "/portfolio" },
+    { name: "Blog", path: "/blog" },
+    { name: "Contact", path: "/contact" },
+  ];
+
+  return {
+    "@context": "https://schema.org",
+    "@type": "ItemList",
+    name: "Main Navigation",
+    description: "Main navigation links for Ayon Bit's website",
+    url: siteConfig.url,
+    numberOfItems: navItems.length,
+    itemListElement: navItems.map((item, index) => ({
+      "@type": "SiteNavigationElement",
+      position: index + 1,
+      name: item.name,
+      url: absoluteUrl(item.path),
+    })),
+  };
+}
+
 export function jsonLdScript(data: unknown) {
   return {
     __html: JSON.stringify(data).replace(/</g, "\\u003c"),
