@@ -5,6 +5,7 @@ import PageTransition from "../../../components/PageTransition";
 import { ServiceHeroSection } from "../../../components/ServiceHero";
 import ServiceSlug from "../../../components/ServiceSlug";
 
+import { ServiceSlugPageProps, ServiceType } from "@/types/service.types";
 import { serviceData } from "../../../lib/data";
 import {
   absoluteUrl,
@@ -13,26 +14,6 @@ import {
   jsonLdScript,
   siteConfig,
 } from "../../../lib/seo";
-
-type ServiceItemType = {
-  title: string;
-  icon: string;
-  description: string[];
-};
-
-type ServiceType = {
-  slug: string;
-  category: string;
-  description: string;
-  image?: string;
-  data: ServiceItemType[];
-};
-
-type ServiceSlugPageProps = {
-  params: Promise<{
-    slug: string;
-  }>;
-};
 
 export async function generateMetadata({
   params,
