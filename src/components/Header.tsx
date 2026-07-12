@@ -1,3 +1,4 @@
+"use client";
 //dpendencies
 import Link from "next/link";
 

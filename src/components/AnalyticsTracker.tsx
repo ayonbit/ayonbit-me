@@ -1,29 +1,28 @@
 "use client";
 
+import { usePathname } from "next/navigation";
 import { useEffect } from "react";
-import { usePathname, useSearchParams } from "next/navigation";
 
-const GA_ID = process.env.NEXT_PUBLIC_GA_ID!;
+const GA_ID = process.env.NEXT_PUBLIC_GA_ID;
 
 declare global {
   interface Window {
-    gtag: (...args: any[]) => void;
+    gtag?: (...args: any[]) => void;
   }
 }
 
 export default function AnalyticsTracker() {
   const pathname = usePathname();
-  const searchParams = useSearchParams();
 
   useEffect(() => {
-    if (!window.gtag) return;
-
-    const url = pathname + (searchParams.toString() ? `?${searchParams}` : "");
+    if (!GA_ID || typeof window === "undefined" || !window.gtag) {
+      return;
+    }
 
     window.gtag("config", GA_ID, {
-      page_path: url,
+      page_path: pathname,
     });
-  }, [pathname, searchParams]);
+  }, [pathname]);
 
   return null;
 }

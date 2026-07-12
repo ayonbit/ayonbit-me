@@ -17,6 +17,7 @@ import {
   siteNavigationJsonLd,
 } from "../lib/seo";
 import AuthProvider from "../utils/AuthProvider";
+
 import "./globals.css";
 
 // Load custom font
