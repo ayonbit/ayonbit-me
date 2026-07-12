@@ -13,6 +13,7 @@ import {
   SheetTrigger,
 } from "../components/ui/sheet";
 import { Button } from "./ui/button";
+import { event } from "@/lib/gtag";
 
 const MobileNav = () => {
   const pathname = usePathname();
@@ -122,6 +123,13 @@ const MobileNav = () => {
                   target="_blank"
                   rel="noopener noreferrer"
                   className="focus:outline-none focus:ring-2 focus:ring-accent focus:ring-offset-2 focus:ring-offset-background"
+                  onClick={() =>
+                    event({
+                      action: "hire_me_click",
+                      category: "Mobile Navigation",
+                      label: "Sheet Menu",
+                    })
+                  }
                 >
                   Hire Me
                 </Link>

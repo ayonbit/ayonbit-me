@@ -2,6 +2,7 @@
 import Link from "next/link";
 
 //External import
+import { event } from "@/lib/gtag";
 import MobileNav from "./MobileNav";
 import Nav from "./Nav";
 import { Button } from "./ui/button";
@@ -22,13 +23,21 @@ const Header = () => {
 
         <div className="hidden xl:flex items-center gap-8">
           <Nav />
+
           <Link
             href="https://www.upwork.com/freelancers/~013d3ec6c65c896873?mp_source=share"
             target="_blank"
             rel="noopener noreferrer"
             aria-label="Hire me - UpWork"
+            onClick={() =>
+              event({
+                action: "hire_me_click",
+                category: "Navigation",
+                label: "Desktop Navbar",
+              })
+            }
           >
-            <Button> Hire me</Button>
+            <Button>Hire me</Button>
           </Link>
         </div>
 
